@@ -8,9 +8,9 @@ body {
 
 .page {
   background-color: $background-secondary;
-  height: 100vh;
+  min-height: 100vh;
   padding: 16px;
-  position: fixed;
+  position: absolute;
   top: 0;
   width: 100vw;
   z-index: 1001;

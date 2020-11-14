@@ -33,6 +33,7 @@ export default {
   border: none;
   background-color: $background-input;
   color: $color-primary;
+  font-family: $font-base;
   padding: 8px 12px;
 
   &:focus {

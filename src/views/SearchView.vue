@@ -16,30 +16,64 @@
         Submit
       </ButtonFull>
     </div>
+    <div v-if="!loading">
+      <div v-if="stations.length">
+        <h2 class="h2">Results</h2>
+        <StationList :stations="stations" />
+      </div>
+      <div v-else-if="error" class="p32 search-info">
+        Fetching stations error
+      </div>
+      <div v-else-if="searchPerformed" class="p32 search-info">
+        No results
+      </div>
+    </div>
+    <div v-else class="p32 search-info">
+      Searching stations
+    </div>
   </div>
 </template>
 
 <script>
+import StationList from "@/components/StationList.vue";
 import ButtonFull from "@/components/ui/ButtonFull.vue";
 import TextInput from "@/components/ui/TextInput.vue";
+
+import { searchStations } from "@/services/smogApi/stations.js";
 
 export default {
   name: "SearchView",
   components: {
     ButtonFull,
+    StationList,
     TextInput
   },
   data() {
     return {
-      searchInput: ""
+      error: false,
+      loading: false,
+      searchPerformed: false,
+      searchInput: "",
+      stations: []
     };
   },
   methods: {
-    handleSearch() {
-      console.log(this.searchInput);
+    async handleSearch() {
+      this.loading = true;
+
+      const name = this.searchInput;
+      this.stations = await searchStations(name);
+
+      this.error = Boolean(this.stations);
+      this.loading = false;
+      this.searchPerformed = true;
     }
   }
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.search-info {
+  text-align: center;
+}
+</style>

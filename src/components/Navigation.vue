@@ -92,7 +92,7 @@ export default {
   font-family: sans-serif;
   display: flex;
   padding: 0 16px;
-  position: absolute;
+  position: fixed;
   width: 100%;
 
   // Overlapping map tiles

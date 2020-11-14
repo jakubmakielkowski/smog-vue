@@ -1,6 +1,6 @@
 // Generate margin and padding utlilities
 
-$sizes: 4, 8, 12, 16, 24, 32;
+$sizes: 0, 4, 8, 12, 16, 24, 32, 48;
 $directions: (
   "t": "top",
   "r": "right",
@@ -17,6 +17,16 @@ $directions: (
     .p#{$letter}#{$size} {
       padding-#{$name}: #{$size}px;
     }
+  }
+}
+
+@each $size in $sizes {
+  .m#{$size} {
+    margin: #{$size};
+  }
+
+  .p#{$size} {
+    padding: #{$size}px;
   }
 }
 

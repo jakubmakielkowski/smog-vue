@@ -12,7 +12,7 @@ import "leaflet/dist/leaflet.css";
 import Leaflet from "leaflet";
 import Modal from "@/components/ui/Modal.vue";
 
-import { getStations } from "@/services/api/stations.js";
+import { getStations } from "@/services/smogApi/stations.js";
 
 const config = {
   coords: [53.136256, 23.156064],
