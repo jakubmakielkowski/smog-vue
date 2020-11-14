@@ -1,9 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import SearchView from "@/views/SearchView";
+
 Vue.use(VueRouter);
 
-const routes = [];
+const routes = [
+  {
+    path: "/search",
+    name: "Search",
+    component: SearchView
+  }
+];
 
 const router = new VueRouter({
   mode: "history",

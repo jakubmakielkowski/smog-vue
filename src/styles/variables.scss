@@ -1,9 +1,21 @@
-$font-primary: "Poppins", sans-serif;
+// Fonts
+$font-base: "Poppins", sans-serif;
 
-$color-primary: #eee;
-$color-secondary: #6c7493;
+// Global colors
+$color-primary: hsl(0, 0%, 93%);
+$color-secondary: hsl(228, 15%, 50%);
 
-$background-primary: #010208;
-$background-secondary: #2e2e2e;
+$background-primary: hsl(231, 78%, 2%);
+$background-secondary: hsl(220, 4%, 14%);
 
+// Element colors
 $background-active: hsla(0, 100%, 100%, 0.1);
+
+$background-input: hsla(0, 100%, 100%, 0.125);
+$background-input-active: hsla(0, 100%, 100%, 0.125);
+
+$background-button: $color-secondary;
+$background-button-active: hsl(229, 22%, 60%);
+
+// Element effects
+$shadow-active: 0 0 10px hsla(0, 100%, 100%, 0.125);

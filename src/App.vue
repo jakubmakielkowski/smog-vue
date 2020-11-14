@@ -1,8 +1,10 @@
 <template>
   <div id="app">
+    <transition name="fade">
+      <router-view />
+    </transition>
     <Navigation />
     <MapContainer />
-    <router-view />
   </div>
 </template>
 
@@ -19,4 +21,12 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>
