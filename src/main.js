@@ -11,3 +11,7 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
+
+import "./styles/reset.css";
+import "./styles/variables.scss";
+import "./styles/index.scss";
