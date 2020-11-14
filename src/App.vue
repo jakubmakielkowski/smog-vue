@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import MapContainer from "@/components/MapContainer.vue";
 import Navigation from "@/components/Navigation.vue";
+import MapContainer from "@/components/MapContainer.vue";
 
 export default {
   name: "App",

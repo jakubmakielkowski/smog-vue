@@ -1,10 +1,16 @@
 <template>
-  <div id="map-container" class="map-container"></div>
+  <div>
+    <transition name="fade">
+      <Modal v-if="mapLoadingStatus"> {{ mapLoadingStatus }}... </Modal>
+    </transition>
+    <div id="map-container" class="map-container"></div>
+  </div>
 </template>
 
 <script>
 import "leaflet/dist/leaflet.css";
 import Leaflet from "leaflet";
+import Modal from "@/components/ui/Modal.vue";
 
 import { getStations } from "@/services/api/stations.js";
 
@@ -17,9 +23,13 @@ const config = {
 
 export default {
   name: "MapContainer",
+  components: {
+    Modal
+  },
   data() {
     return {
-      map: null
+      map: null,
+      mapLoadingStatus: "Loading map"
     };
   },
   mounted() {
@@ -43,6 +53,8 @@ export default {
         id: "mapbox/smog-map",
         maxZoom: maxZoom
       }).addTo(this.map);
+
+      this.mapLoadingStatus = "Fetching smog data";
     },
     async populateMap() {
       const stationsResponse = await getStations();
@@ -58,6 +70,8 @@ export default {
           stroke: false
         }).addTo(this.map);
       });
+
+      this.mapLoadingStatus = false;
     }
   }
 };

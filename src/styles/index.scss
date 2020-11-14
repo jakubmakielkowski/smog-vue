@@ -1,8 +1,9 @@
-// @import "./reset.css";
-// @import "./variables.scss";
-
 body {
   background-color: hsl(180, 2%, 17%);
+  color: $color-primary;
+  font-family: $font-base;
+  letter-spacing: 0.5px;
+  margin: 0;
 }
 
 .page {
@@ -14,19 +15,3 @@ body {
   width: 100vw;
   z-index: 1001;
 }
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-input,
-button {
-  color: $color-primary;
-  font-family: $font-base;
-  letter-spacing: 0.5px;
-  margin: 0;
-}
-
