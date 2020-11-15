@@ -1,0 +1,22 @@
+{
+    "Search": "Szukaj",
+    "Saved": "Zapisane",
+    "Map": "Mapa",
+    "Info": "Info",
+    "Settings": "Ustawienia",
+    "Type station address and select one to choose.":"Wpisz nazwę stacji i wybierz szukaną.",
+    "Submit":"Zarwierdź",
+    "Fetching stations error":"Błąd podczas pobierania stacji",
+    "Searching stations":"Szukanie stacji",
+    "City or street name":"Nazwa ulicy lub miasta",
+    "Saved stations":"Zapisane stacje",
+    "Measuring points observed by you. Click the name to go to the station.":"Punkty pomiarowe obserwowane przez ciebie. Wybierz szukany, aby przejść do wybranej stacji.",
+    "Information":"Informacje",
+    "Information about chemical compounds in the air.":"Informacje o związkach chemicznych w powietrzu.",
+    "Adjust app for yourself.":"Dostosuj apliakcję pod siebie.",
+    "Geolocation":"Lokalizacja",
+    "Click this button to navigate to your position on the map. Geolocation access is needed.":"Kliknij przycisk aby przenieść sie do twojego położenia na mapie. Włączona geolokalizacja jest niezbędna.",
+    "Locate me":"Znajdź moje położenie",
+    "Loading map":"Ładowanie mapy",
+    "Loading stations data": "Ładowanie informacji o stacjach"
+}

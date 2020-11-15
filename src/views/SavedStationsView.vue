@@ -1,9 +1,9 @@
 <template>
   <div class="page">
     <header>
-      <h1 class="h1">Saved Stations</h1>
+      <h1 class="h1">{{ $t("Saved stations") }}</h1>
       <p class="mb16">
-        Measuring points observed by you. Click the name to go to the station.
+        {{ $t("Measuring points observed by you. Click the name to go to the station.") }}
       </p>
     </header>
   </div>

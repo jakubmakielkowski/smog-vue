@@ -1,9 +1,5 @@
 <template>
-  <button
-    type="button"
-    class="button"
-    @click="$emit('submit', $event.target.value)"
-  >
+  <button type="button" class="button" @click="$emit('submit', $event.target.value)">
     <slot />
   </button>
 </template>

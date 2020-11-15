@@ -3,17 +3,15 @@
     <div v-if="!loading">
       <div v-if="city || street">
         <header>
-          <h1 class="h1">Station {{ city }}</h1>
+          <h1 class="h1">{{ $t("Station") }} {{ city }}</h1>
           <h2 class="h2">{{ street }}</h2>
         </header>
       </div>
       <div v-else-if="error" class="p32 search-info">
-        Fetching station error
+        {{ $t("Fetching station error") }}
       </div>
     </div>
-    <div v-else class="p32 search-info">
-      Loading station data...
-    </div>
+    <div v-else class="p32 search-info">{{ $t("Loading station data") }}...</div>
   </div>
 </template>
 

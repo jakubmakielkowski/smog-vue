@@ -2,7 +2,7 @@
   <input
     type="text"
     class="text-input"
-    :placeholder="placeholder"
+    :placeholder="$t(placeholder)"
     :autofocus="autofocus"
     @input="$emit('input', $event.target.value)"
     @keyup.enter="$emit('submit', $event.target.value)"

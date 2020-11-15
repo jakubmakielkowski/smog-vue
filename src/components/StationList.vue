@@ -1,15 +1,7 @@
 <template>
   <ul class="station-list mb48">
-    <li
-      v-for="(station, i) in stations"
-      :key="i"
-      tabindex="0"
-      class="station-item"
-    >
-      <StationItem
-        :city="station.address.city"
-        :street="station.address.street"
-      />
+    <li v-for="(station, i) in stations" :key="i" tabindex="0" class="station-item">
+      <StationItem :city="station.address.city" :street="station.address.street" />
     </li>
   </ul>
 </template>

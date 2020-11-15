@@ -1,15 +1,15 @@
 <template>
   <div class="page">
     <header>
-      <h1 class="h1">Search</h1>
-      <p class="mb16">Type station address and select one to choose.</p>
+      <h1 class="h1">{{ $t("Search") }}</h1>
+      <p class="mb16">{{ $t("Type station address and select one to choose.") }}</p>
     </header>
     <div>
       <TextInput
         v-model="searchInput"
         :autofocus="true"
         class="w100 mb12"
-        placeholder="City or street name..."
+        placeholder="City or street name"
         @submit="handleSearch"
       />
       <ButtonFull v-if="searchInput" class="w100" @submit="handleSearch">
@@ -18,18 +18,18 @@
     </div>
     <div v-if="!loading">
       <div v-if="stations.length">
-        <h2 class="h2">Results</h2>
+        <h2 class="h2">{{ $t("Results") }}</h2>
         <StationList :stations="stations" />
       </div>
       <div v-else-if="error" class="p32 search-info">
-        Fetching stations error
+        {{ $t("Fetching stations error") }}
       </div>
       <div v-else-if="searchPerformed" class="p32 search-info">
-        No results
+        {{ $t("No results") }}
       </div>
     </div>
     <div v-else class="p32 search-info">
-      Searching stations
+      {{ $t("Searching stations") }}
     </div>
   </div>
 </template>

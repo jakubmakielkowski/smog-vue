@@ -20,7 +20,7 @@ const config = {
   minZoom: 7,
   maxZoom: 15
 };
-console.log(config);
+
 export default {
   name: "MapContainer",
   components: {

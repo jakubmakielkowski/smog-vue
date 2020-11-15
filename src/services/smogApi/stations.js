@@ -2,9 +2,7 @@ import axios from "axios";
 
 const getStations = async () => {
   try {
-    const response = await axios.get(
-      `${process.env.VUE_APP_SMOG_API_URL}/stations/gios`
-    );
+    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/stations/gios`);
     return response;
   } catch (error) {
     console.error(error);
@@ -13,9 +11,7 @@ const getStations = async () => {
 
 const getStation = async stationId => {
   try {
-    const response = await axios.get(
-      `${process.env.VUE_APP_SMOG_API_URL}/stations/${stationId}`
-    );
+    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/stations/${stationId}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -25,9 +21,7 @@ const getStation = async stationId => {
 // TODO make API distinguish no results and error
 const searchStations = async name => {
   try {
-    const response = await axios.get(
-      `${process.env.VUE_APP_SMOG_API_URL}/stations/search?name=${name}`
-    );
+    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/stations/search?name=${name}`);
     return response.data;
   } catch (error) {
     console.error(error);
