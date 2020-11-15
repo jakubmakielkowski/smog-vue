@@ -1,7 +1,11 @@
 <template>
   <ul class="station-list mb48">
     <li v-for="(station, i) in stations" :key="i" tabindex="0" class="station-item">
-      <StationItem :city="station.address.city" :street="station.address.street" />
+      <StationItem
+        :city="station.address.city"
+        :street="station.address.street"
+        @click.native="navigateToStation(station.stationId)"
+      />
     </li>
   </ul>
 </template>
@@ -10,7 +14,7 @@
 import StationItem from "@/components/StationItem.vue";
 
 export default {
-  name: "SearchView",
+  name: "StationList",
   components: {
     StationItem
   },
@@ -18,6 +22,11 @@ export default {
     stations: {
       required: true,
       type: Array
+    }
+  },
+  methods: {
+    navigateToStation(stationId) {
+      this.$router.push(`/station/${stationId}`);
     }
   }
 };
