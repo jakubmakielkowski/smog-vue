@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       map: null,
+      markersLayer: null,
       mapLoadingStatus: "Loading map"
     };
   },
@@ -60,18 +61,30 @@ export default {
       const stationsResponse = await getStations();
       const stations = stationsResponse.data;
 
+      this.markersLayer = Leaflet.featureGroup().addTo(this.map);
+
       stations.forEach(station => {
+        const { stationId } = station;
         const { latitude, longitude } = station.location;
 
-        Leaflet.circleMarker([latitude, longitude], {
+        const marker = Leaflet.circleMarker([latitude, longitude], {
           fillColor: "#666",
           fillOpacity: 0.5,
           radius: 16,
-          stroke: false
-        }).addTo(this.map);
+          stroke: false,
+          stationId: stationId
+        });
+
+        marker.addTo(this.markersLayer);
+        marker.addTo(this.map);
       });
 
+      this.markersLayer.on("click", this.handleMarkerClick);
       this.mapLoadingStatus = false;
+    },
+    handleMarkerClick(event) {
+      const { stationId } = event.layer.options;
+      this.$router.push(`/station/${stationId}`);
     }
   }
 };

@@ -5,6 +5,7 @@ import InformationView from "@/views/InformationView";
 import SavedStationsView from "@/views/SavedStationsView";
 import SearchView from "@/views/SearchView";
 import SettingsView from "@/views/SettingsView";
+import StationView from "@/views/StationView";
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,12 @@ const routes = [
     path: "/settings",
     name: "Settings",
     component: SettingsView
+  },
+  {
+    path: "/station/:stationId",
+    name: "Station",
+    component: StationView,
+    props: true
   }
 ];
 
