@@ -2,13 +2,13 @@ import Vue from "vue";
 import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
-import store from "./store";
+import mapStore from "./store/map";
 
 Vue.config.productionTip = false;
 
 new Vue({
   router,
-  store,
+  mapStore,
   render: h => h(App)
 }).$mount("#app");
 

@@ -11,16 +11,16 @@
 import "leaflet/dist/leaflet.css";
 import Leaflet from "leaflet";
 import Modal from "@/components/ui/Modal.vue";
-
+import mapStore from "@/store/map";
 import { getStations } from "@/services/smogApi/stations.js";
 
 const config = {
-  coords: [53.136256, 23.156064],
-  initialZoom: 11,
-  minZoom: 8,
+  coords: mapStore.state.position,
+  initialZoom: 8,
+  minZoom: 7,
   maxZoom: 15
 };
-
+console.log(config);
 export default {
   name: "MapContainer",
   components: {
@@ -32,6 +32,19 @@ export default {
       markersLayer: null,
       mapLoadingStatus: "Loading map"
     };
+  },
+  computed: {
+    position() {
+      return mapStore.state.position;
+    }
+  },
+  watch: {
+    position: {
+      deep: true,
+      handler(newPosition) {
+        this.map.flyTo(newPosition, 11);
+      }
+    }
   },
   mounted() {
     this.initializeMap();
