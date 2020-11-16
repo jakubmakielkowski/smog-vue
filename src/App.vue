@@ -10,7 +10,7 @@
 
 <script>
 import Navigation from "@/components/Navigation.vue";
-import MapContainer from "@/components/MapContainer.vue";
+import MapContainer from "@/components/map/MapContainer.vue";
 
 export default {
   name: "App",

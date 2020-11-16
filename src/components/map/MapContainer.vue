@@ -13,6 +13,7 @@ import Leaflet from "leaflet";
 import Modal from "@/components/ui/Modal.vue";
 import mapStore from "@/store/map";
 import { getStations } from "@/services/smogApi/stations.js";
+import { getColorByLevel } from "@/components/map/helpers.js";
 
 const config = {
   coords: mapStore.state.position,
@@ -77,11 +78,11 @@ export default {
       this.markersLayer = Leaflet.featureGroup().addTo(this.map);
 
       stations.forEach(station => {
-        const { stationId } = station;
+        const { stationId, level } = station;
         const { latitude, longitude } = station.location;
 
         const marker = Leaflet.circleMarker([latitude, longitude], {
-          fillColor: "#666",
+          fillColor: getColorByLevel(level),
           fillOpacity: 0.5,
           radius: 16,
           stroke: false,
