@@ -18,6 +18,24 @@ const getStation = async stationId => {
   }
 };
 
+const getStationMeasurement = async stationId => {
+  try {
+    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/measurements/${stationId}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getStationQualityIndex = async stationId => {
+  try {
+    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/qualityIndices/${stationId}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // TODO make API distinguish no results and error
 const searchStations = async name => {
   try {
@@ -28,4 +46,4 @@ const searchStations = async name => {
   }
 };
 
-export { getStations, getStation, searchStations };
+export { getStations, getStation, getStationMeasurement, getStationQualityIndex, searchStations };

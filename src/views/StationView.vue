@@ -9,6 +9,13 @@
         <ButtonFull class="w100 mb12" @submit="navigateToStation">
           {{ $t("Navigate to station") }}
         </ButtonFull>
+        <section>
+          <header>
+            <h2 class="h2">{{ $t("Quality index") }}</h2>
+            <p>{{ $t("Air quality:") }} {{ qualityIndexLevel }}</p>
+            <QualityIndexIndicator :qualityindexlevel="qualityIndexLevel" />
+          </header>
+        </section>
         <ButtonFull class="w100" @submit="handleSaveStationButtonClick">
           {{ isStationSaved ? $t("Remove station from saved") : $t("Add station to saved") }}
         </ButtonFull>
@@ -23,15 +30,16 @@
 
 <script>
 import ButtonFull from "@/components/ui/ButtonFull.vue";
+import QualityIndexIndicator from "@/components/ui/QualityIndexIndicator.vue";
 import mapStore from "@/store/map";
-
-import { getStation } from "@/services/smogApi/stations.js";
+import { getStation, getStationMeasurement, getStationQualityIndex } from "@/services/smogApi/stations.js";
 import { addSavedStation, removeSavedStation, isStationSaved } from "@/services/localStorage/savedStations";
 
 export default {
   name: "StationView",
   components: {
-    ButtonFull
+    ButtonFull,
+    QualityIndexIndicator
   },
   props: {
     stationId: {
@@ -40,7 +48,14 @@ export default {
     }
   },
   data() {
-    return { stationData: null, isStationSaved: null, loading: false, error: false };
+    return {
+      stationData: null,
+      measurementData: null,
+      qualityIndexData: null,
+      isStationSaved: null,
+      loading: false,
+      error: false
+    };
   },
   beforeRouteEnter(to, from, next) {
     next(async vm => {
@@ -59,6 +74,15 @@ export default {
         vm.loading = false;
       }
     });
+  },
+  computed: {
+    qualityIndexLevel() {
+      return this.qualityIndexData && this.qualityIndexData.level;
+    }
+  },
+  async mounted() {
+    this.measurementData = await getStationMeasurement(this.$props.stationId);
+    this.qualityIndexData = await getStationQualityIndex(this.$props.stationId);
   },
   methods: {
     navigateToStation() {
