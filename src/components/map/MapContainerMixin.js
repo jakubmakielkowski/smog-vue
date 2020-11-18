@@ -27,7 +27,6 @@ const pointsLayerConfig = {
 export default {
   data() {
     return {
-      isMapLoaded: false,
       map: null,
       pointsLayer: null
     };
@@ -45,12 +44,18 @@ export default {
       this.pointsLayer.on("click", this.handleMarkerClick);
     },
     async populate() {
-      const stationsResponse = await getStations();
-      const stations = stationsResponse.data;
+      try {
+        this.apiRequestPerformed = true;
 
-      stations.forEach(station => this.addPoint(station));
+        // TODO: update api - no stations case
+        const stationsResponse = await getStations();
+        const stations = stationsResponse.data;
 
-      this.isMapLoaded = true;
+        stations.forEach(station => this.addPoint(station));
+        this.apiResponseSuccess = true;
+      } catch (error) {
+        this.apiResponseError = true;
+      }
     },
     addPoint(station) {
       const { stationId, level } = station;

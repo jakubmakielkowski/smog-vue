@@ -16,20 +16,21 @@
         Submit
       </ButtonFull>
     </div>
-    <div v-if="!loading">
-      <div v-if="stations.length">
+
+    <div v-if="apiResponseLoading" class="p32 search-info">
+      {{ $t("Searching stations") }}
+    </div>
+    <div v-else>
+      <div v-if="apiResponseSuccess">
         <h2 class="h2">{{ $t("Results") }}</h2>
         <StationList :stations="stations" />
       </div>
-      <div v-else-if="error" class="p32 search-info">
+      <div v-else-if="apiResponseError" class="p32 search-info">
         {{ $t("Fetching stations error") }}
       </div>
-      <div v-else-if="searchPerformed" class="p32 search-info">
+      <div v-else-if="apiResponseEmpty" class="p32 search-info">
         {{ $t("No results") }}
       </div>
-    </div>
-    <div v-else class="p32 search-info">
-      {{ $t("Searching stations") }}
     </div>
   </div>
 </template>
@@ -38,6 +39,7 @@
 import StationList from "@/components/StationList.vue";
 import ButtonFull from "@/components/ui/ButtonFull.vue";
 import TextInput from "@/components/ui/TextInput.vue";
+import ApiMixin from "@/mixins/api";
 
 import { searchStations } from "@/services/smogApi/stations.js";
 
@@ -48,25 +50,29 @@ export default {
     StationList,
     TextInput
   },
+  mixins: [ApiMixin],
   data() {
     return {
-      error: false,
-      loading: false,
-      searchPerformed: false,
       searchInput: "",
       stations: []
     };
   },
   methods: {
     async handleSearch() {
-      this.loading = true;
+      this.clearApiResonse();
+      this.apiRequestPerformed = true;
 
-      const name = this.searchInput;
-      this.stations = await searchStations(name);
+      try {
+        this.stations = await searchStations(this.searchInput);
 
-      this.error = Boolean(this.stations);
-      this.loading = false;
-      this.searchPerformed = true;
+        if (this.stations.length) {
+          this.apiResponseSuccess = true;
+        } else {
+          this.apiResponseEmpty = true;
+        }
+      } catch (error) {
+        this.apiResponseError = true;
+      }
     }
   }
 };

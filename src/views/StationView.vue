@@ -1,6 +1,7 @@
 <template>
   <div class="page">
-    <div v-if="!loading">
+    <div v-if="apiResponseLoading" class="p32 search-info">{{ $t("Loading station data") }}...</div>
+    <div v-else>
       <div v-if="stationData">
         <header>
           <h1 class="h1">{{ $t("Station") }} {{ stationData.address.city }}</h1>
@@ -20,11 +21,10 @@
           {{ isStationSaved ? $t("Remove station from saved") : $t("Add station to saved") }}
         </ButtonFull>
       </div>
-      <div v-else-if="error" class="p32 search-info">
+      <div v-else-if="apiResponseError" class="p32 search-info">
         {{ $t("Fetching station error") }}
       </div>
     </div>
-    <div v-else class="p32 search-info">{{ $t("Loading station data") }}...</div>
   </div>
 </template>
 
@@ -32,6 +32,8 @@
 import ButtonFull from "@/components/ui/ButtonFull.vue";
 import QualityIndexIndicator from "@/components/ui/QualityIndexIndicator.vue";
 import mapStore from "@/store/map";
+import ApiMixin from "@/mixins/api";
+
 import { getStation, getStationMeasurement, getStationQualityIndex } from "@/services/smogApi/stations.js";
 import { addSavedStation, removeSavedStation, isStationSaved } from "@/services/localStorage/savedStations";
 
@@ -41,6 +43,7 @@ export default {
     ButtonFull,
     QualityIndexIndicator
   },
+  mixins: [ApiMixin],
   props: {
     stationId: {
       required: true,
@@ -52,23 +55,28 @@ export default {
       stationData: null,
       measurementData: null,
       qualityIndexData: null,
-      isStationSaved: null,
-      loading: false,
-      error: false
+      isStationSaved: null
     };
   },
   beforeRouteEnter(to, from, next) {
     next(async vm => {
       if (vm._props.stationId) {
-        vm.loading = true;
+        vm.apiRequestPerformed = true;
 
-        const stationData = await getStation(vm._props.stationId);
+        try {
+          const stationData = await getStation(vm._props.stationId);
 
-        if (stationData) {
-          vm.stationData = stationData;
-          vm.isStationSaved = isStationSaved(stationData);
-        } else {
-          vm.error = true;
+          // TODO make API differ network error and no station
+          if (stationData) {
+            vm.stationData = stationData;
+            vm.isStationSaved = isStationSaved(stationData);
+
+            vm.apiResponseSuccess = true;
+          } else {
+            vm.apiResponseEmpty = true;
+          }
+        } catch (error) {
+          this.apiResponseError = true;
         }
 
         vm.loading = false;
@@ -78,6 +86,12 @@ export default {
   computed: {
     qualityIndexLevel() {
       return this.qualityIndexData && this.qualityIndexData.level;
+    }
+  },
+  watch: {
+    apiResponseEmpty() {
+      // TODO create 404 page
+      this.$router.push("/not-found");
     }
   },
   async mounted() {
