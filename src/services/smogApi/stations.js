@@ -20,7 +20,7 @@ const getStation = async stationId => {
 
 const getStationMeasurement = async stationId => {
   try {
-    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/measurements/${stationId}`);
+    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/stations/${stationId}/measurements`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -29,7 +29,7 @@ const getStationMeasurement = async stationId => {
 
 const getStationQualityIndex = async stationId => {
   try {
-    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/qualityIndices/${stationId}`);
+    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/stations/${stationId}/qualityIndex`);
     return response.data;
   } catch (error) {
     console.error(error);
