@@ -35,7 +35,7 @@ export default {
 <style lang="scss">
 .quality-index-indicator {
   border-radius: 100%;
-  height: 40px;
-  width: 40px;
+  height: 20px;
+  width: 20px;
 }
 </style>

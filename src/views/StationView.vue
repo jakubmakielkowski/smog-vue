@@ -10,14 +10,46 @@
         <ButtonFull class="w100 mb12" @submit="navigateToStation">
           {{ $t("Navigate to station") }}
         </ButtonFull>
+
         <section>
           <header>
-            <h2 class="h2">{{ $t("Quality index") }}</h2>
-            <p>{{ $t("Air quality:") }} {{ qualityIndexLevel }}</p>
-            <QualityIndexIndicator :qualityindexlevel="qualityIndexLevel" />
+            <h2 class="h2 mb0">{{ $t("Air quality") }}</h2>
           </header>
+          <div class="quality-index-container">
+            <QualityIndexIndicator :qualityindexlevel="qualityIndexLevel" class="mr8" />
+            <p>{{ $t("Air quality") }}: {{ qualityIndexLevel }}</p>
+          </div>
         </section>
-        <ButtonFull class="w100" @submit="handleSaveStationButtonClick">
+        <header>
+          <h2 class="h2 mb8">{{ $t("Measurements") }}</h2>
+        </header>
+        <div class="parameters-container mb12">
+          <ButtonRadio
+            v-for="(param, i) in params"
+            :id="`button-forecast-param-${param}`"
+            :key="`param-${i}`"
+            class="mr8"
+            :value="param"
+            :checked="param === currentParam"
+            name="forecast-parameter"
+            @submit="handleParamChange"
+          >
+            {{ param }}
+          </ButtonRadio>
+        </div>
+        <section :if="historicMeasurements.length" class="mb16">
+          <header>
+            <h3 class="h3 mt4 mb8">{{ $t("Last day measurement") }}</h3>
+          </header>
+          <Chart :measurement-data="historicMeasurements" class="mb16" />
+        </section>
+        <section :if="forecastMeasurements.length" class="mb16">
+          <header>
+            <h3 class="h3 mt4 mb8">{{ $t("Next day measurement") }}</h3>
+          </header>
+          <Chart :measurement-data="forecastMeasurements" class="mb16" />
+        </section>
+        <ButtonFull class="w100 mb64" @submit="handleSaveStationButtonClick">
           {{ isStationSaved ? $t("Remove station from saved") : $t("Add station to saved") }}
         </ButtonFull>
       </div>
@@ -30,6 +62,8 @@
 
 <script>
 import ButtonFull from "@/components/ui/ButtonFull.vue";
+import ButtonRadio from "@/components/ui/ButtonRadio.vue";
+import Chart from "@/components/Chart.vue";
 import QualityIndexIndicator from "@/components/ui/QualityIndexIndicator.vue";
 import mapStore from "@/store/map";
 import ApiMixin from "@/mixins/api";
@@ -41,6 +75,8 @@ export default {
   name: "StationView",
   components: {
     ButtonFull,
+    ButtonRadio,
+    Chart,
     QualityIndexIndicator
   },
   mixins: [ApiMixin],
@@ -55,6 +91,7 @@ export default {
       stationData: null,
       measurementData: null,
       qualityIndexData: null,
+      currentParam: null,
       isStationSaved: null
     };
   },
@@ -70,7 +107,6 @@ export default {
           if (stationData) {
             vm.stationData = stationData;
             vm.isStationSaved = isStationSaved(stationData);
-
             vm.apiResponseSuccess = true;
           } else {
             vm.apiResponseEmpty = true;
@@ -85,7 +121,19 @@ export default {
   },
   computed: {
     qualityIndexLevel() {
-      return this.qualityIndexData && this.qualityIndexData.level;
+      return this.qualityIndexData?.level;
+    },
+    measurements() {
+      return this.measurementData?.measurements;
+    },
+    params() {
+      return this.measurements?.map(measurement => measurement.param);
+    },
+    historicMeasurements() {
+      return this.measurements?.find(measurement => measurement.param === this.currentParam)?.historicValues || [];
+    },
+    forecastMeasurements() {
+      return this.measurements?.find(measurement => measurement.param === this.currentParam)?.forecastValues || [];
     }
   },
   watch: {
@@ -95,8 +143,11 @@ export default {
     }
   },
   async mounted() {
-    this.measurementData = await getStationMeasurement(this.$props.stationId);
-    this.qualityIndexData = await getStationQualityIndex(this.$props.stationId);
+    try {
+      this.measurementData = await getStationMeasurement(this.$props.stationId);
+      this.qualityIndexData = await getStationQualityIndex(this.$props.stationId);
+      this.currentParam = this.measurementData.measurements[0].param;
+    } catch (error) {}
   },
   methods: {
     navigateToStation() {
@@ -112,6 +163,9 @@ export default {
       }
 
       this.isStationSaved = isStationSaved(this.stationData);
+    },
+    handleParamChange(value) {
+      this.currentParam = value;
     }
   }
 };
@@ -120,5 +174,14 @@ export default {
 <style lang="scss">
 .search-info {
   text-align: center;
+}
+
+.quality-index-container {
+  align-items: center;
+  display: flex;
+}
+
+.parameters-container {
+  display: flex;
 }
 </style>

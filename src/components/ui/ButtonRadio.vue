@@ -6,6 +6,7 @@
       :name="name"
       :value="value"
       class="radio"
+      :checked="checked"
       @click="$emit('submit', $event.target.value)"
     />
     <label :for="id">
@@ -18,6 +19,11 @@
 export default {
   name: "ButtonRadio",
   props: {
+    checked: {
+      default: false,
+      required: false,
+      type: Boolean
+    },
     id: {
       required: true,
       type: String
@@ -42,5 +48,6 @@ export default {
 
 .radio {
   margin: 0 8px 0 0;
+  border-radius: 100px;
 }
 </style>

@@ -21,7 +21,15 @@
   "Loading map": "Ładowanie mapy",
   "Loading stations data": "Ładowanie informacji o stacjach",
   "Navigate to station": "Przejdź do stacji",
-  "Add station to saved": "Dodaj stację do zapiasnych",
+  "Add station to saved": "Dodaj stację do zapisanych",
   "Remove station from saved": "Usuń stację z zapisanych",
-  "No saved stations":"Brak zapisanych stacji"
+  "No saved stations":"Brak zapisanych stacji",
+  "Loading station data":"Pobieranie informacji o stacji",
+  "Station": "Stacja",
+  "Air quality": "Jakość powietrza",
+  "Measurements": "Pomiary",
+  "Last day measurement": "Pomiary z ostatniej doby",
+  "Next day measurement": "Prognoza na kolejną dobę",
+  "Language": "Język",
+  "Choose language.": "Wybierz język."
 }

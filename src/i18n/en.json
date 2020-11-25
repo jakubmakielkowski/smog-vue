@@ -23,5 +23,13 @@
   "Navigate to station": "Navigate to station",
   "Add station to saved": "Add station to saved",
   "Remove station from saved": "Remove station from saved",
-  "No saved stations":"No saved stations"
+  "No saved stations":"No saved stations",
+  "Loading station data":"Loading station data",
+  "Station": "Station",
+  "Air quality": "Air quality",
+  "Measurements": "Measurements",
+  "Last day measurement": "Last day measurement",
+  "Next day measurement": "Next day measurement",
+  "Language": "Language",
+  "Choose language.": "Choose language."
 }
