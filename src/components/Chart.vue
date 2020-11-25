@@ -95,10 +95,6 @@ export default {
   },
   mounted() {
     this.chart = new Chart(this.$refs.chart, chartConfig);
-
-    // if (this.$props.data.length) {
-    //   this.updateChart(this.$props.data);
-    // }
   },
   methods: {
     updateChart(measurements) {

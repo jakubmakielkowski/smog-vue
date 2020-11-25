@@ -9,7 +9,8 @@ const mapConfig = {
   zoom: 8,
   minZoom: 7,
   maxZoom: 15,
-  zoomControl: false
+  zoomControl: false,
+  renderer: Leaflet.canvas()
 };
 
 const tileLayerConfig = {

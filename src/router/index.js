@@ -1,39 +1,33 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import InformationView from "@/views/InformationView";
-import SavedStationsView from "@/views/SavedStationsView";
-import SearchView from "@/views/SearchView";
-import SettingsView from "@/views/SettingsView";
-import StationView from "@/views/StationView";
-
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/information",
     name: "Information",
-    component: InformationView
+    component: () => import("@/views/InformationView")
   },
   {
     path: "/saved-stations",
     name: "Saved stations",
-    component: SavedStationsView
+    component: () => import("@/views/SavedStationsView")
   },
   {
     path: "/search",
     name: "Search",
-    component: SearchView
+    component: () => import("@/views/SearchView")
   },
   {
     path: "/settings",
     name: "Settings",
-    component: SettingsView
+    component: () => import("@/views/SettingsView")
   },
   {
     path: "/station/:stationId",
     name: "Station",
-    component: StationView,
+    component: () => import("@/views/StationView"),
     props: true
   }
 ];
