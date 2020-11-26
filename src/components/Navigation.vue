@@ -56,8 +56,9 @@ export default {
 .navigation {
   background-color: $background-primary;
   bottom: 0;
-  font-family: sans-serif;
+  font-size: 12px;
   display: flex;
+  justify-content: space-between;
   padding: 0 16px;
   position: fixed;
   width: 100%;
@@ -69,9 +70,9 @@ export default {
 .navigation-link {
   color: $color-secondary;
   font-family: $font-base;
-  padding: 8px 0;
+  padding: 8px;
   text-decoration: none;
-  width: 20%;
+  // width: 20%;
 
   .icon {
     display: block;
@@ -95,6 +96,27 @@ export default {
 
   .icon path {
     fill: $color-primary;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navigation {
+    background-color: $background-secondary;
+    border-radius: 50px;
+    padding: 0 24px;
+    bottom: unset;
+    box-shadow: $shadow-primary;
+    left: 50%;
+    position: fixed;
+    top: 16px;
+    transform: translateX(-50%);
+    width: unset;
+  }
+
+  .navigation-link {
+    // min-width: 60px;
+    padding: 8px;
+    // margin: 0 8px;
   }
 }
 </style>

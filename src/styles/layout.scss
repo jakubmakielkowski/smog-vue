@@ -22,7 +22,7 @@ $directions: (
 
 @each $size in $sizes {
   .m#{$size} {
-    margin: #{$size};
+    margin: #{$size}px;
   }
 
   .p#{$size} {
