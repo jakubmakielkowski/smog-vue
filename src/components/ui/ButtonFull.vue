@@ -16,6 +16,7 @@ export default {
   border: 2px solid $background-button;
   border-radius: 8px;
   color: $color-primary;
+  font-family: $font-base;
   padding: 8px;
 
   &:focus {

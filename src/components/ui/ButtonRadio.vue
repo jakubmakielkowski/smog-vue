@@ -5,7 +5,8 @@
       type="radio"
       :name="name"
       :value="value"
-      class="radio"
+      class="radio-input"
+      :class="{ 'radio-input-visible': inputVisible }"
       :checked="checked"
       @click="$emit('submit', $event.target.value)"
     />
@@ -28,6 +29,11 @@ export default {
       required: true,
       type: String
     },
+    inputVisible: {
+      default: true,
+      required: false,
+      type: Boolean
+    },
     name: {
       required: true,
       type: String
@@ -46,8 +52,14 @@ export default {
   align-items: center;
 }
 
-.radio {
-  margin: 0 8px 0 0;
+.radio-input {
   border-radius: 100px;
+  margin: 0;
+  width: 0;
+
+  &-visible {
+    margin: 0 8px 0 0;
+    width: unset;
+  }
 }
 </style>

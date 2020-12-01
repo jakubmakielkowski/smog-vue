@@ -31,9 +31,11 @@
             v-for="(param, i) in params"
             :id="`button-forecast-param-${param}`"
             :key="`param-${i}`"
-            class="mr8"
+            class="mr8 button-param"
+            :class="{ 'button-param-active': param === currentParam }"
             :value="param"
             :checked="param === currentParam"
+            :input-visible="false"
             name="forecast-parameter"
             @submit="handleParamChange"
           >
@@ -204,5 +206,16 @@ export default {
 
 .parameters-container {
   display: flex;
+}
+
+.button-param {
+  background-color: $background-button;
+  border-radius: 40px;
+  padding: 6px 12px;
+
+  &-active {
+    box-shadow: $shadow-active;
+    background-color: $background-button-active;
+  }
 }
 </style>
