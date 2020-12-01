@@ -1,8 +1,8 @@
 <template>
   <div class="page">
     <div v-if="apiResponseLoading" class="p32 search-info">{{ $t("Loading station data") }}...</div>
-    <div v-else>
-      <div v-if="stationData">
+    <div v-else-if="stationData">
+      <section>
         <header>
           <h1 class="h1">{{ $t("Station") }} {{ stationData.address.city }}</h1>
           <h2 class="h2">{{ stationData.address.street }}</h2>
@@ -10,16 +10,19 @@
         <ButtonFull class="w100 mb12" @submit="navigateToStation">
           {{ $t("Navigate to station") }}
         </ButtonFull>
+      </section>
 
-        <section>
-          <header>
-            <h2 class="h2 mb0">{{ $t("Air quality") }}</h2>
-          </header>
-          <div class="quality-index-container">
-            <QualityIndexIndicator :qualityindexlevel="qualityIndexLevel" class="mr8" />
-            <p>{{ $t("Air quality") }}: {{ qualityIndexLevel }}</p>
-          </div>
-        </section>
+      <section v-if="qualityIndexLevel">
+        <header>
+          <h2 class="h2 mb0">{{ $t("Air quality") }}</h2>
+        </header>
+        <div class="quality-index-container">
+          <QualityIndexIndicator :quality-index-level="qualityIndexLevel" class="mr8" />
+          <p>{{ $t("Air quality") }}: {{ qualityIndexLevel }}</p>
+        </div>
+      </section>
+
+      <section v-if="historicMeasurements.length || forecastMeasurements.length" class="mb16">
         <header>
           <h2 class="h2 mb8">{{ $t("Measurements") }}</h2>
         </header>
@@ -37,25 +40,21 @@
             {{ param }}
           </ButtonRadio>
         </div>
-        <section :if="historicMeasurements.length" class="mb16">
-          <header>
-            <h3 class="h3 mt4 mb8">{{ $t("Last day measurement") }}</h3>
-          </header>
-          <Chart :measurement-data="historicMeasurements" class="mb16" />
-        </section>
-        <section :if="forecastMeasurements.length" class="mb16">
-          <header>
-            <h3 class="h3 mt4 mb8">{{ $t("Next day measurement") }}</h3>
-          </header>
-          <Chart :measurement-data="forecastMeasurements" class="mb16" />
-        </section>
+        <div v-if="historicMeasurements.length">
+          <h3 class="h3 mt4 mb8">{{ $t("Last day measurement") }} - {{ currentParam }}</h3>
+          <Chart :measurement-data="historicMeasurements" type="historic" class="mb16" />
+        </div>
+        <div v-if="forecastMeasurements.length">
+          <h3 class="h3 mt4 mb8">{{ $t("Next day measurement") }}</h3>
+          <Chart :measurement-data="forecastMeasurements" type="forecast" class="mb16" />
+        </div>
         <ButtonFull class="w100 mb64" @submit="handleSaveStationButtonClick">
           {{ isStationSaved ? $t("Remove station from saved") : $t("Add station to saved") }}
         </ButtonFull>
-      </div>
-      <div v-else-if="apiResponseError" class="p32 search-info">
-        {{ $t("Fetching station error") }}
-      </div>
+      </section>
+    </div>
+    <div v-else-if="apiResponseError" class="p32 search-info">
+      {{ $t("Fetching station error") }}
     </div>
   </div>
 </template>
@@ -90,39 +89,12 @@ export default {
     return {
       stationData: null,
       measurementData: null,
-      qualityIndexData: null,
+      qualityIndexLevel: null,
       currentParam: null,
       isStationSaved: null
     };
   },
-  beforeRouteEnter(to, from, next) {
-    next(async vm => {
-      if (vm._props.stationId) {
-        vm.apiRequestPerformed = true;
-
-        try {
-          const stationData = await getStation(vm._props.stationId);
-
-          // TODO make API differ network error and no station
-          if (stationData) {
-            vm.stationData = stationData;
-            vm.isStationSaved = isStationSaved(stationData);
-            vm.apiResponseSuccess = true;
-          } else {
-            vm.apiResponseEmpty = true;
-          }
-        } catch (error) {
-          this.apiResponseError = true;
-        }
-
-        vm.loading = false;
-      }
-    });
-  },
   computed: {
-    qualityIndexLevel() {
-      return this.qualityIndexData?.level;
-    },
     measurements() {
       return this.measurementData?.measurements;
     },
@@ -137,17 +109,17 @@ export default {
     }
   },
   watch: {
-    apiResponseEmpty() {
-      // TODO create 404 page
-      this.$router.push("/not-found");
+    stationId() {
+      this.clearStationData();
+      this.loadStationData();
+      this.loadStationMeasurements();
+      this.loadStationQualityIndex();
     }
   },
-  async mounted() {
-    try {
-      this.measurementData = await getStationMeasurement(this.$props.stationId);
-      this.qualityIndexData = await getStationQualityIndex(this.$props.stationId);
-      this.currentParam = this.measurementData.measurements[0].param;
-    } catch (error) {}
+  created() {
+    this.loadStationData();
+    this.loadStationMeasurements();
+    this.loadStationQualityIndex();
   },
   methods: {
     navigateToStation() {
@@ -166,6 +138,55 @@ export default {
     },
     handleParamChange(value) {
       this.currentParam = value;
+    },
+    async loadStationData() {
+      try {
+        this.apiRequestPerformed = true;
+        const stationData = await getStation(this.$props.stationId);
+
+        // TODO make API differ network error and no station
+        if (stationData) {
+          this.stationData = stationData;
+          this.isStationSaved = isStationSaved(stationData);
+
+          const { level } = stationData;
+
+          if (level) {
+            this.qualityIndexLevel = level;
+          }
+
+          this.apiResponseSuccess = true;
+        } else {
+          this.apiResponseEmpty = true;
+        }
+      } catch (error) {
+        this.apiResponseError = true;
+      }
+    },
+    async loadStationMeasurements() {
+      try {
+        this.measurementData = await getStationMeasurement(this.$props.stationId);
+        this.currentParam = this.measurementData.measurements[0]?.param;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async loadStationQualityIndex() {
+      try {
+        if (!this.qualityIndexLevel) {
+          const qualityIndexData = await getStationQualityIndex(this.$props.stationId);
+          this.qualityIndexLevel = qualityIndexData.level;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    clearStationData() {
+      this.stationData = null;
+      this.measurementData = null;
+      this.qualityIndexLevel = null;
+      this.currentParam = null;
+      this.isStationSaved = null;
     }
   }
 };

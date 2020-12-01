@@ -43,3 +43,8 @@ body {
     }
   }
 }
+
+// Override leaflet default style
+.leaflet-control-container {
+  display: none;
+}

@@ -8,7 +8,7 @@ import { getColorByLevel } from "@/helpers/qualityIndex";
 export default {
   name: "QualityIndexIndicator",
   props: {
-    qualityindexlevel: {
+    qualityIndexLevel: {
       default: "",
       required: false,
       type: String
@@ -19,15 +19,8 @@ export default {
       color: null
     };
   },
-  computed: {
-    qualityIndexColor() {
-      return getColorByLevel(this.$props.qualityIndexLevel);
-    }
-  },
-  watch: {
-    qualityindexlevel(newValue) {
-      this.color = getColorByLevel(newValue);
-    }
+  mounted() {
+    this.color = getColorByLevel(this.$props.qualityIndexLevel);
   }
 };
 </script>

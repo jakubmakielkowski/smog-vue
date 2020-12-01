@@ -39,7 +39,7 @@ const getStationQualityIndex = async stationId => {
 // TODO make API distinguish no results and error
 const searchStations = async name => {
   try {
-    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/stations/search?name=${name}`);
+    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/stations?search=${name}`);
     return response.data;
   } catch (error) {
     console.error(error);
