@@ -6,8 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     position: {
-      lat: 52.0691,
-      lon: 19.4805
+      lat: 52.35,
+      lon: 19.43
     },
     stations: null
   },
