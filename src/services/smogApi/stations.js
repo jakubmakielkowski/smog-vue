@@ -1,9 +1,18 @@
 import axios from "axios";
 
+import { buildStationsQueryString } from "./queryString";
+
 const getStations = async () => {
   try {
-    const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/stations`);
-    return response;
+    const queryString = buildStationsQueryString();
+
+    if (queryString) {
+      const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/stations?${queryString}`);
+      return response;
+    } else {
+      const response = await axios.get(`${process.env.VUE_APP_SMOG_API_URL}/stations`);
+      return response;
+    }
   } catch (error) {
     console.error(error);
   }

@@ -3,6 +3,7 @@ import VueI18n from "vue-i18n";
 import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
+import apiStore from "./store/api";
 import mapStore from "./store/map";
 
 import { getLanguage } from "./services/localStorage/language";
@@ -26,6 +27,7 @@ const i18n = new VueI18n({
 new Vue({
   i18n,
   router,
+  apiStore,
   mapStore,
   render: h => h(App)
 }).$mount("#app");
