@@ -1,63 +1,70 @@
 <template>
-  <div class="page">
-    <div v-if="apiResponseLoading" class="p32 search-info">{{ $t("Loading station data") }}...</div>
-    <div v-else-if="stationData">
-      <section>
-        <header>
-          <h1 class="h1">{{ $t("Station") }} {{ stationData.address.city }}</h1>
-          <h2 class="h2">{{ stationData.address.street }}</h2>
-        </header>
-        <ButtonFull class="w100 mb12" @submit="navigateToStation">
-          {{ $t("Navigate to station") }}
-        </ButtonFull>
-      </section>
+  <div>
+    <div class="page">
+      <div v-if="apiResponseLoading" class="p32 search-info">{{ $t("Loading station data") }}...</div>
+      <div v-else-if="stationData">
+        <section>
+          <header>
+            <h1 class="h1">{{ $t("Station") }} {{ stationData.address.city }}</h1>
+            <h2 class="h2">{{ stationData.address.street }}</h2>
+          </header>
+          <ButtonFull class="w100 mb12" @submit="navigateToStation">
+            {{ $t("Navigate to station") }}
+          </ButtonFull>
+        </section>
 
-      <section v-if="qualityIndexLevel">
-        <header>
-          <h2 class="h2 mb0">{{ $t("Air quality") }}</h2>
-        </header>
-        <div class="quality-index-container">
-          <QualityIndexIndicator :quality-index-level="qualityIndexLevel" class="mr8" />
-          <p>{{ $t("Air quality") }}: {{ qualityIndexLevel }}</p>
-        </div>
-      </section>
+        <section v-if="qualityIndexLevel">
+          <header>
+            <h2 class="h2 mb0">{{ $t("Air quality") }}</h2>
+          </header>
+          <div class="quality-index-container">
+            <QualityIndexIndicator :quality-index-level="qualityIndexLevel" class="mr8" />
+            <p>{{ $t("Air quality") }}: {{ qualityIndexLevel }}</p>
+          </div>
+        </section>
 
-      <section v-if="historicMeasurements.length || forecastMeasurements.length" class="mb16">
-        <header>
-          <h2 class="h2 mb8">{{ $t("Measurements") }}</h2>
-        </header>
-        <div class="parameters-container mb12">
-          <ButtonRadio
-            v-for="(param, i) in params"
-            :id="`button-forecast-param-${param}`"
-            :key="`param-${i}`"
-            class="mr8 button-param"
-            :class="{ 'button-param-active': param === currentParam }"
-            :value="param"
-            :checked="param === currentParam"
-            :input-visible="false"
-            name="forecast-parameter"
-            @submit="handleParamChange"
-          >
-            {{ param }}
-          </ButtonRadio>
-        </div>
-        <div v-if="historicMeasurements.length">
-          <h3 class="h3 mt4 mb8">{{ $t("Last day measurement") }} - {{ currentParam }}</h3>
-          <Chart :measurement-data="historicMeasurements" type="historic" class="mb16" />
-        </div>
-        <div v-if="forecastMeasurements.length">
-          <h3 class="h3 mt4 mb8">{{ $t("Next day measurement") }}</h3>
-          <Chart :measurement-data="forecastMeasurements" type="forecast" class="mb16" />
-        </div>
-        <ButtonFull class="w100 mb64" @submit="handleSaveStationButtonClick">
-          {{ isStationSaved ? $t("Remove station from saved") : $t("Add station to saved") }}
-        </ButtonFull>
-      </section>
+        <section v-if="historicMeasurements.length || forecastMeasurements.length" class="mb16">
+          <header>
+            <h2 class="h2 mb8">{{ $t("Measurements") }}</h2>
+          </header>
+          <div class="parameters-container mb12">
+            <ButtonRadio
+              v-for="(param, i) in params"
+              :id="`button-forecast-param-${param}`"
+              :key="`param-${i}`"
+              class="mr8 button-param"
+              :class="{ 'button-param-active': param === currentParam }"
+              :value="param"
+              :checked="param === currentParam"
+              :input-visible="false"
+              name="forecast-parameter"
+              @submit="handleParamChange"
+            >
+              {{ param }}
+            </ButtonRadio>
+          </div>
+          <div v-if="historicMeasurements.length">
+            <h3 class="h3 mt4 mb8">{{ $t("Last day measurement") }} - {{ currentParam }}</h3>
+            <Chart :measurement-data="historicMeasurements" type="historic" class="mb16" />
+          </div>
+          <div v-if="forecastMeasurements.length">
+            <h3 class="h3 mt4 mb8">{{ $t("Next day measurement") }}</h3>
+            <Chart :measurement-data="forecastMeasurements" type="forecast" class="mb16" />
+          </div>
+          <ButtonFull class="w100 mb64" @submit="handleSaveStationButtonClick">
+            {{ isStationSaved ? $t("Remove station from saved") : $t("Add station to saved") }}
+          </ButtonFull>
+        </section>
+      </div>
+      <div v-else-if="apiResponseError" class="p32 search-info">
+        {{ $t("Fetching station error") }}
+      </div>
     </div>
-    <div v-else-if="apiResponseError" class="p32 search-info">
-      {{ $t("Fetching station error") }}
-    </div>
+    <transition name="fade">
+      <Modal v-if="savedStationModalText" :disappear-after="3000" :data="savedStationModalText">
+        {{ savedStationModalText }}
+      </Modal>
+    </transition>
   </div>
 </template>
 
@@ -66,6 +73,8 @@ import ButtonFull from "@/components/ui/ButtonFull.vue";
 import ButtonRadio from "@/components/ui/ButtonRadio.vue";
 import Chart from "@/components/Chart.vue";
 import QualityIndexIndicator from "@/components/ui/QualityIndexIndicator.vue";
+import Modal from "@/components/ui/Modal.vue";
+
 import mapStore from "@/store/map";
 import ApiMixin from "@/mixins/api";
 
@@ -78,6 +87,7 @@ export default {
     ButtonFull,
     ButtonRadio,
     Chart,
+    Modal,
     QualityIndexIndicator
   },
   mixins: [ApiMixin],
@@ -93,7 +103,8 @@ export default {
       measurementData: null,
       qualityIndexLevel: null,
       currentParam: null,
-      isStationSaved: null
+      isStationSaved: null,
+      savedStationModalText: null
     };
   },
   computed: {
@@ -132,8 +143,10 @@ export default {
     handleSaveStationButtonClick() {
       if (this.isStationSaved) {
         removeSavedStation(this.stationData);
+        this.savedStationModalText = `Removed station ${this.stationData.address.city}`;
       } else {
         addSavedStation(this.stationData);
+        this.savedStationModalText = `Saved station ${this.stationData.address.city}`;
       }
 
       this.isStationSaved = isStationSaved(this.stationData);
