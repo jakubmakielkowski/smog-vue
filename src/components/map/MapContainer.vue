@@ -62,6 +62,9 @@ export default {
     },
     position() {
       return this.map.position;
+    },
+    source() {
+      return this.api.source;
     }
   },
   watch: {
@@ -69,6 +72,11 @@ export default {
       deep: true,
       handler(newPosition) {
         this.mapContainer.flyTo(newPosition, 11);
+      }
+    },
+    source: {
+      handler() {
+        this.populate(false);
       }
     }
   },
@@ -98,16 +106,16 @@ export default {
 
       this.$store.dispatch("api/setBounds", parsedBounds);
 
-      this.populate();
+      this.populate(true);
     },
-    async populate() {
+    async populate(append) {
       try {
         this.apiRequestPerformed = true;
 
         const stationsResponse = await getStations();
         const stations = stationsResponse.data;
 
-        if (this.map.stations) {
+        if (append) {
           this.$store.dispatch("map/appendStations", stations);
         } else {
           this.$store.dispatch("map/setStations", stations);

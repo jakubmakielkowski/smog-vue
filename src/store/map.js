@@ -28,17 +28,21 @@ export default {
       context.commit("setStations", payload);
     },
     appendStations(context, payload) {
-      const allStations = context.state.stations.concat(payload);
+      if (context.state.stations) {
+        const allStations = context.state.stations.concat(payload);
 
-      const uniqueIds = new Set();
+        const uniqueIds = new Set();
 
-      const filteredStations = allStations.filter(el => {
-        const duplicate = uniqueIds.has(el.stationId);
-        uniqueIds.add(el.stationId);
-        return !duplicate;
-      });
+        const filteredStations = allStations.filter(el => {
+          const duplicate = uniqueIds.has(el.stationId);
+          uniqueIds.add(el.stationId);
+          return !duplicate;
+        });
 
-      context.commit("setStations", filteredStations);
+        context.commit("setStations", filteredStations);
+      } else {
+        context.commit("setStations", payload);
+      }
     },
     removeStations(context) {
       context.commit("removeStations");

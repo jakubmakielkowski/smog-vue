@@ -1,4 +1,4 @@
-import { getSource } from "@/services/localStorage/source";
+import { getSource, setSource } from "@/services/localStorage/source";
 
 export default {
   namespaced: true,
@@ -6,17 +6,6 @@ export default {
     bounds: null,
     search: "",
     source: getSource() || null
-  },
-  getters: {
-    getBounds(state) {
-      return state.bounds;
-    },
-    getSearch(state) {
-      return state.search;
-    },
-    getSource(state) {
-      return state.source;
-    }
   },
   mutations: {
     setBounds(state, payload) {
@@ -28,7 +17,8 @@ export default {
       state.search = payload;
     },
     setSource(state, payload) {
-      state.source = payload;
+      setSource(payload);
+      state.source = getSource();
     }
   },
   actions: {

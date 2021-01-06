@@ -41,13 +41,13 @@
       <div>
         <ButtonRadio
           v-for="(source, i) in sources"
-          :id="`button-source-${source}`"
+          :id="`button-source-${source.name}`"
           :key="`source${i}`"
-          :value="source"
+          :value="source.code"
           name="source"
           @submit="handleSourceChange"
         >
-          {{ source }}
+          {{ source.name }}
         </ButtonRadio>
       </div>
     </section>
@@ -59,7 +59,6 @@ import ButtonFull from "@/components/ui/ButtonFull.vue";
 import ButtonRadio from "@/components/ui/ButtonRadio.vue";
 import { localize } from "@/services/geolocation/geolocation.js";
 import { setLanguage } from "@/services/localStorage/language";
-import { setSource } from "@/services/localStorage/source";
 
 export default {
   name: "SettingsView",
@@ -73,7 +72,11 @@ export default {
         { code: "en", name: "English" },
         { code: "pl", name: "Polski" }
       ],
-      sources: ["GIOS", "Airly", ""]
+      sources: [
+        { code: "GIOS", name: "GIOS" },
+        { code: "Airly", name: "Airly" },
+        { code: "", name: "All" }
+      ]
     };
   },
   methods: {
@@ -85,9 +88,8 @@ export default {
       this.$i18n.locale = language;
       setLanguage(language);
     },
-    handleSourceChange(source) {
-      setSource(source);
-      this.$store.dispatch("map/removeStations");
+    async handleSourceChange(code) {
+      this.$store.dispatch("api/setSource", code);
     }
   }
 };
