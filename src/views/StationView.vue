@@ -48,7 +48,7 @@
             <Chart :measurement-data="historicMeasurements" type="historic" class="mb16" />
           </div>
           <div v-if="forecastMeasurements.length">
-            <h3 class="h3 mt4 mb8">{{ $t("Next day measurement") }}</h3>
+            <h3 class="h3 mt4 mb8">{{ $t("Next day measurement") }} - {{ currentParam }}</h3>
             <Chart :measurement-data="forecastMeasurements" type="forecast" class="mb16" />
           </div>
           <ButtonFull class="w100 mb64" @submit="handleSaveStationButtonClick">

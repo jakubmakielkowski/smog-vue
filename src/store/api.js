@@ -5,7 +5,7 @@ export default {
   state: {
     bounds: null,
     search: "",
-    source: getSource() || null
+    source: getSource() || ""
   },
   mutations: {
     setBounds(state, payload) {

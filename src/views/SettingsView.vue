@@ -27,6 +27,7 @@
           :key="`lang${i}`"
           :value="lang.code"
           name="language"
+          :checked="root.language === lang.code"
           @submit="handleLanguageChange"
         >
           {{ lang.name }}
@@ -45,6 +46,7 @@
           :key="`source${i}`"
           :value="source.code"
           name="source"
+          :checked="api.source === source.code"
           @submit="handleSourceChange"
         >
           {{ source.name }}
@@ -55,16 +57,23 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import ButtonFull from "@/components/ui/ButtonFull.vue";
 import ButtonRadio from "@/components/ui/ButtonRadio.vue";
 import { localize } from "@/services/geolocation/geolocation.js";
-import { setLanguage } from "@/services/localStorage/language";
 
 export default {
   name: "SettingsView",
   components: {
     ButtonFull,
     ButtonRadio
+  },
+  computed: {
+    ...mapState({
+      api: state => state.api,
+      map: state => state.map,
+      root: state => state.root
+    })
   },
   data() {
     return {
@@ -86,7 +95,7 @@ export default {
     },
     handleLanguageChange(language) {
       this.$i18n.locale = language;
-      setLanguage(language);
+      this.$store.dispatch("root/setLanguage", language);
     },
     async handleSourceChange(code) {
       this.$store.dispatch("api/setSource", code);
