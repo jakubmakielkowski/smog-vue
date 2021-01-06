@@ -1,9 +1,9 @@
-import mapStore from "@/store/map";
+import store from "@/store/store";
 
 const success = position => {
   const lat = position.coords.latitude;
   const lon = position.coords.longitude;
-  mapStore.dispatch("setPosition", { lat, lon });
+  store.dispatch("map/setPosition", { lat, lon });
 };
 
 const error = () => {

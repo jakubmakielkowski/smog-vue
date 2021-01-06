@@ -16,13 +16,11 @@ import Leaflet from "leaflet";
 import Modal from "@/components/ui/Modal.vue";
 import ApiMixin from "@/mixins/api";
 
-import apiStore from "@/store/api";
-import mapStore from "@/store/map";
+import { mapState } from "vuex";
 import { getStations } from "@/services/smogApi/stations";
 import { getColorByLevel } from "@/helpers/qualityIndex";
 
 const mapConfig = {
-  center: mapStore.state.position,
   zoom: 10,
   minZoom: 7,
   maxZoom: 15,
@@ -50,23 +48,27 @@ export default {
   mixins: [ApiMixin],
   data() {
     return {
-      map: null,
+      mapContainer: null,
       pointsLayer: null
     };
   },
   computed: {
+    ...mapState({
+      api: state => state.api,
+      map: state => state.map
+    }),
     modalText() {
       return this;
     },
     position() {
-      return mapStore.state.position;
+      return this.map.position;
     }
   },
   watch: {
     position: {
       deep: true,
       handler(newPosition) {
-        this.map.flyTo(newPosition, 11);
+        this.mapContainer.flyTo(newPosition, 11);
       }
     }
   },
@@ -76,22 +78,25 @@ export default {
   },
   methods: {
     initializeMap() {
-      this.map = Leaflet.map("map-container", mapConfig);
-      Leaflet.tileLayer(process.env.VUE_APP_MAPBOX_STYLE_URL, tileLayerConfig).addTo(this.map);
+      this.mapContainer = Leaflet.map("map-container", {
+        ...mapConfig,
+        center: this.map.position
+      });
+      Leaflet.tileLayer(process.env.VUE_APP_MAPBOX_STYLE_URL, tileLayerConfig).addTo(this.mapContainer);
 
-      this.pointsLayer = Leaflet.featureGroup().addTo(this.map);
+      this.pointsLayer = Leaflet.featureGroup().addTo(this.mapContainer);
       this.pointsLayer.on("click", this.handleMarkerClick);
 
-      this.map.on("moveend", this.setBounds);
+      this.mapContainer.on("moveend", this.setBounds);
     },
     setBounds() {
-      const bounds = this.map.getBounds();
+      const bounds = this.mapContainer.getBounds();
       const { _southWest, _northEast } = bounds;
       const parsedBounds = [_southWest.lat, _northEast.lat, _southWest.lng, _northEast.lng].map(bound =>
         bound.toFixed(4)
       );
 
-      apiStore.dispatch("setBounds", parsedBounds);
+      this.$store.dispatch("api/setBounds", parsedBounds);
 
       this.populate();
     },
@@ -102,16 +107,16 @@ export default {
         const stationsResponse = await getStations();
         const stations = stationsResponse.data;
 
-        if (mapStore.state.stations) {
-          mapStore.dispatch("appendStations", stations);
+        if (this.map.stations) {
+          this.$store.dispatch("map/appendStations", stations);
         } else {
-          mapStore.dispatch("setStations", stations);
+          this.$store.dispatch("map/setStations", stations);
         }
 
         this.pointsLayer.clearLayers();
 
-        if (mapStore.state.stations) {
-          Array.from(mapStore.state.stations).forEach(station => this.addPoint(station));
+        if (this.map.stations) {
+          Array.from(this.map.stations).forEach(station => this.addPoint(station));
         }
 
         this.apiResponseSuccess = true;
@@ -131,7 +136,7 @@ export default {
       });
 
       marker.addTo(this.pointsLayer);
-      marker.addTo(this.map);
+      marker.addTo(this.mapContainer);
     },
     handleMarkerClick(event) {
       const { stationId } = event.layer.options;

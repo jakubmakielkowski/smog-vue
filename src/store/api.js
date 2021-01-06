@@ -1,13 +1,22 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { getSource } from "@/services/localStorage/source";
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default {
+  namespaced: true,
   state: {
     bounds: null,
     search: "",
-    source: null
+    source: getSource() || null
+  },
+  getters: {
+    getBounds(state) {
+      return state.bounds;
+    },
+    getSearch(state) {
+      return state.search;
+    },
+    getSource(state) {
+      return state.source;
+    }
   },
   mutations: {
     setBounds(state, payload) {
@@ -33,4 +42,4 @@ export default new Vuex.Store({
       context.commit("setSource", payload);
     }
   }
-});
+};

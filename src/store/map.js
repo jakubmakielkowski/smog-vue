@@ -1,9 +1,5 @@
-import Vue from "vue";
-import Vuex from "vuex";
-
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default {
+  namespaced: true,
   state: {
     position: {
       lat: 52.35,
@@ -48,4 +44,4 @@ export default new Vuex.Store({
       context.commit("removeStations");
     }
   }
-});
+};

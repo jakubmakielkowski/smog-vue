@@ -75,7 +75,6 @@ import Chart from "@/components/Chart.vue";
 import QualityIndexIndicator from "@/components/ui/QualityIndexIndicator.vue";
 import Modal from "@/components/ui/Modal.vue";
 
-import mapStore from "@/store/map";
 import ApiMixin from "@/mixins/api";
 
 import { getStation, getStationMeasurement, getStationQualityIndex } from "@/services/smogApi/stations.js";
@@ -137,7 +136,7 @@ export default {
   methods: {
     navigateToStation() {
       const { latitude, longitude } = this.stationData.location;
-      mapStore.dispatch("setPosition", { lat: latitude, lon: longitude });
+      this.$store.dispatch("map/setPosition", { lat: latitude, lon: longitude });
       this.$router.push(`/`);
     },
     handleSaveStationButtonClick() {
