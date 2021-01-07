@@ -49,7 +49,7 @@
           :checked="api.source === source.code"
           @submit="handleSourceChange"
         >
-          {{ source.name }}
+          {{ $t(source.name) }}
         </ButtonRadio>
       </div>
     </section>

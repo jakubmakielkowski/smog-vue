@@ -31,5 +31,12 @@
   "Last day measurement": "Pomiary z ostatniej doby",
   "Next day measurement": "Prognoza na kolejną dobę",
   "Language": "Język",
-  "Choose language.": "Wybierz język."
+  "Choose language.": "Wybierz język.",
+  "Results": "Wyniki",
+  "No results": "Brak wyników",
+  "Source": "Źródło",
+  "Choose data source.": "Wybierz źródło danych.",
+  "GIOS": "GIOS",
+  "Airly": "Airly",
+  "All": "Wszystkie"
 }

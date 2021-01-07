@@ -13,7 +13,7 @@
         @submit="handleSearch"
       />
       <ButtonFull v-if="searchInput" class="w100" @submit="handleSearch">
-        Submit
+        {{ $t("Submit") }}
       </ButtonFull>
     </div>
 

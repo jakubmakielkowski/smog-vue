@@ -31,5 +31,12 @@
   "Last day measurement": "Last day measurement",
   "Next day measurement": "Next day measurement",
   "Language": "Language",
-  "Choose language.": "Choose language."
+  "Choose language.": "Choose language.",
+  "Results": "Results",
+  "No results": "No results",
+  "Source": "Source",
+  "Choose data source.": "Choose data source.",
+  "GIOS": "GIOS",
+  "Airly": "Airly",
+  "All": "All"
 }
