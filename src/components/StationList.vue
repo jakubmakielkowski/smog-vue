@@ -40,7 +40,8 @@ export default {
 }
 
 .station-item {
-  &:focus {
+  &:focus,
+  &:hover {
     background-color: $background-input-active;
     box-shadow: $shadow-active;
   }
