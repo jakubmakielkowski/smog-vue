@@ -97,7 +97,7 @@ export default {
       this.$i18n.locale = language;
       this.$store.dispatch("root/setLanguage", language);
     },
-    async handleSourceChange(code) {
+    handleSourceChange(code) {
       this.$store.dispatch("api/setSource", code);
     }
   }

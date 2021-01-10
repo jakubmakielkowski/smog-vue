@@ -142,10 +142,10 @@ export default {
     handleSaveStationButtonClick() {
       if (this.isStationSaved) {
         removeSavedStation(this.stationData);
-        this.savedStationModalText = `Removed station ${this.stationData.address.city}`;
+        this.savedStationModalText = `${this.$t("Removed station")} ${this.stationData.address.city}`;
       } else {
         addSavedStation(this.stationData);
-        this.savedStationModalText = `Saved station ${this.stationData.address.city}`;
+        this.savedStationModalText = `${this.$t("Saved station")} ${this.stationData.address.city}`;
       }
 
       this.isStationSaved = isStationSaved(this.stationData);

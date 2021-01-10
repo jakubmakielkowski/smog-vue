@@ -1,5 +1,5 @@
 <template>
-  <div v-if="alive" class="modal">
+  <div v-if="alive" class="modal" :style="`z-index: ${zIndex};`">
     <slot />
   </div>
 </template>
@@ -16,6 +16,11 @@ export default {
     disappearAfter: {
       default: 0,
       requred: false,
+      type: Number
+    },
+    zIndex: {
+      default: 1003,
+      required: false,
       type: Number
     }
   },
@@ -56,6 +61,5 @@ export default {
   padding: 16px;
   position: fixed;
   transform: translate(-50%, -50%);
-  z-index: 1003;
 }
 </style>

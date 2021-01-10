@@ -8,9 +8,9 @@
     </header>
     <div v-if="!loading">
       <StationList v-if="stations.length" :stations="stations" />
-      <div v-else class="p32 search-info">{{ $t("No saved stations") }}...</div>
+      <div v-else class="p32 saved-stations-info">{{ $t("No saved stations") }}</div>
     </div>
-    <div v-else class="p32 search-info">{{ $t("Loading station data") }}...</div>
+    <div v-else class="p32 saved-stations-info">{{ $t("Loading station data") }}...</div>
   </div>
 </template>
 
@@ -43,4 +43,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.saved-stations-info {
+  text-align: center;
+}
+</style>
