@@ -61,5 +61,6 @@
   "Chemical compounds": "Chemical compounds",
   "Stations cointain info about these chemical compounds": "Stations cointain info about these chemical compounds",
   "Saved station": "Saved station",
-  "Removed station": "Removed station"
+  "Removed station": "Removed station",
+  "Due to using free Heroku server first API data load may take above 1 minute. Next visits will be performed faster.": "Due to using free Heroku server first API data load may take above 1 minute. Next visits will be performed faster."
 }

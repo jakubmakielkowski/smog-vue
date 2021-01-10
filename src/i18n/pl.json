@@ -61,5 +61,6 @@
   "Chemical compounds": "Związki chemiczne",
   "Stations cointain info about these chemical compounds": "Stacje zawierają informacje o nastepujących związkach chemicznych",
   "Saved station": "Zapisano stację",
-  "Removed station": "Usunięto stację"
+  "Removed station": "Usunięto stację",
+  "Due to using free Heroku server first API data load may take above 1 minute. Next visits will be performed faster.": "Z powodu darmowej wersji serwera Heroku pierwsza odpowiedź API może trwać długo. Kolejne wizyty będą przetwarzane szybciej."
 }

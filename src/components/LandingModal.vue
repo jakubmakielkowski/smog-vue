@@ -32,6 +32,13 @@
         </ButtonRadio>
       </div>
     </section>
+    <div class="badge error mb16">
+      {{
+        $t(
+          "Due to using free Heroku server first API data load may take above 1 minute. Next visits will be performed faster."
+        )
+      }}
+    </div>
     <ButtonFull class="w100" @submit="hideModal">
       {{ $t("Go to app") }}
     </ButtonFull>
@@ -89,5 +96,13 @@ export default {
 
 .quality-index {
   display: flex;
+}
+
+.badge.error {
+  border-radius: 8px;
+  background-color: #ff1e1e;
+  color: #ffffff;
+  font-size: 11px;
+  padding: 8px;
 }
 </style>
