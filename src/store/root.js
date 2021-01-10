@@ -1,14 +1,14 @@
-import { getLanguage, setLanguage } from "../services/localStorage/language";
+import { languageStorageName, getLocalStorageData, setLocalStorageData } from "../services/localStorage/localStorage";
 
 export default {
   namespaced: true,
   state: {
-    language: getLanguage() || "en"
+    language: getLocalStorageData(languageStorageName) || "en"
   },
   mutations: {
     setLanguage(state, payload) {
       state.language = payload;
-      setLanguage(payload);
+      setLocalStorageData(languageStorageName, payload);
     }
   },
   actions: {

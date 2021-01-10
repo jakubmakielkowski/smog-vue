@@ -5,7 +5,7 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store/store";
 
-import { getLanguage } from "./services/localStorage/language";
+import { languageStorageName, getLocalStorageData } from "./services/localStorage/localStorage";
 import pl from "./i18n/pl.json";
 import en from "./i18n/en.json";
 Vue.config.productionTip = false;
@@ -18,7 +18,7 @@ const messages = {
 };
 
 const i18n = new VueI18n({
-  locale: getLanguage() || "en",
+  locale: getLocalStorageData(languageStorageName) || "en",
   fallbackLocale: "en",
   messages
 });

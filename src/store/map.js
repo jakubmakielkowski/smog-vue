@@ -1,9 +1,9 @@
-import { getPosition, setPosition } from "@/services/localStorage/position";
+import { positionStorageName, getLocalStorageData, setLocalStorageData } from "@/services/localStorage/localStorage";
 
 export default {
   namespaced: true,
   state: {
-    position: getPosition() || {
+    position: getLocalStorageData(positionStorageName) || {
       lat: 52.35,
       lon: 19.43
     },
@@ -11,8 +11,8 @@ export default {
   },
   mutations: {
     setPosition(state, payload) {
-      setPosition(payload);
-      const { lat, lon } = getPosition();
+      setLocalStorageData(positionStorageName, payload);
+      const { lat, lon } = getLocalStorageData(positionStorageName);
       state.position.lat = lat;
       state.position.lon = lon;
     },
